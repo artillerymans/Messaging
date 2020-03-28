@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        applicationId "com.android.messaging"
+        minSdkVersion 19
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0.0.0"
+        multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    signingConfigs {
+        config {
+            keyAlias rootProject.ext.KEY_ALIAS
+            keyPassword rootProject.ext.KEY_PASSWORD
+            storeFile file(rootProject.ext.STORE_FILE)
+            storePassword rootProject.ext.STORE_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.name.endsWith("debug")) {
+                outputFileName = "Messaging.apk"
+            } else {
+                outputFileName = "Messaging.apk"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation group: 'com.android.support', name: 'palette-v7', version: '26.0.0'
+    // https://mvnrepository.com/artifact/com.android.support/appcompat-v7
+    implementation group: 'com.android.support', name: 'appcompat-v7', version: '26.0.0'
+
+}
